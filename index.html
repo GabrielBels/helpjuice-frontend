@@ -10,32 +10,43 @@
     <title>HelpJuice - Test Project</title>
 
     <link rel="HelpJuice Icon" href="src/icon.ico" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css">
-    <script src="helper.js"></script>
-    
 
+    <!-- Import TailWindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Import jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+    <!-- Import the css and js files -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="helper.js"></script>
+
 </head>
 
 <body class="w-screen">
     <div class="container pl-40 pt-10 ">
+        <!-- Page Title -->
         <div class="border-solid  border-b-2 pb-2 w-5/6 ">
             <h1 class="text-4xl font-bold text-left pb-0.5">
                 Front-end developer test project
             </h1>
         </div>
+        <!-- Subtitle -->
         <div class="pt-5 w-5/6">
             <p>Goal: Make a page that looks exatcly like the figma's page, and has the same functionalities</p>
         </div>
-        <div id="divHeaders">
 
+        <!-- div for append the headers -->
+        <div id="divHeaders">
         </div>
+
+        <!-- All the area that is allowed to edit/write -->
         <div id="divTextArea" class="pt-5 w-5/6">
             <textarea is-writing-header="0" class="resize-none w-full placeholder:text-slate-400 h-screen"
                 id="mainNotes" placeholder="Type / for blocks, @ to link docs or people"></textarea>
 
+            <!-- The help block that appears on type / -->
             <div id="helpBlock"
                 class="hidden md:top-64 lg:top-48 left-40 border border-slate-400/20 w-max pt-3 absolute">
                 <div class="flex items-center rounded-md p-1.5 px-3.5 ">
@@ -82,8 +93,12 @@
         </div>
     </div>
 </body>
+
 <script type="text/javascript">
     $(document).ready(() => {
+
+        // Start the page focusing on the <textarea>
+        $("#mainNotes").focus();
 
         // Handle all key up on the main <textarea>
         $("#mainNotes").keyup(() => {
@@ -112,12 +127,15 @@
             }
         });
 
+        // Handle all key up on the main <textarea>
         $('#mainNotes').keydown(function (e) {
+            // Get <textarea> text
+            var textAreatxt = ($("#mainNotes").val() ?? "").trim();
+
             var key = e.which;
             if (key == 13)  // the enter key code
             {
-                var textAreatxt = ($("#mainNotes").val() ?? "").trim();
-
+                // Check if it's writing a HEADER element
                 var isWritingHeader = checkIsWritingHeader();
 
                 if (!textAreatxt) {
@@ -137,18 +155,15 @@
                 return true;
             } else if (key == 8) // the backspace key code 
             {
-                var textAreatxt = $("#mainNotes").val();
-
                 if (!textAreatxt) {
                     e.preventDefault();
 
-
-                    // If its writing the Header
+                    // If its writing the Header and backspace on a empty <textarea>
+                    // Clear the box and return to the normal typing
                     if (checkIsWritingHeader())
                         changeTextAreaPlaceholder(false);
                     else if ($("#divHeaders h1").length > 0) // If has some header, erase the most recent
                         deleteLastHeader();
-
 
                     return true;
                 }
@@ -157,6 +172,7 @@
             }
         });
 
+        // Handle click on the [Header 1 element] on help block
         $("#lineHeadingElement").click(() => {
             changeTextAreaPlaceholder(true);
             $("#helpBlock").hide();
