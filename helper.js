@@ -67,6 +67,11 @@ function setHelpBlockPosition() {
     if (numberLinesTextArea > 1)
         marginTop += numberLinesTextArea * 1.5
 
+    var h1Quantity = $("#divHeaders h1").length;
+
+    if (h1Quantity > 0)
+        marginTop += h1Quantity * 2.5
+
     $("#helpBlock").css({ 'top': `${marginTop}em`, 'left': `${marginLeft}em` });
 }
 
