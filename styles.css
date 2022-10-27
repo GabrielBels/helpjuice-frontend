@@ -18,11 +18,8 @@ html {
     width: 0;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
-/* Optional: show position indicator in red */
-::-webkit-scrollbar-thumb {
-    background: #FF0000;
-}
 
+/* Change the <textarea> placeholder style */
 .headerTextArea::-webkit-input-placeholder {
     color: rgb(203 213 225) !important;
     font-weight: 700 !important;
@@ -30,6 +27,7 @@ html {
     line-height: 2.3rem !important;
 }
 
+/* Change the <textarea> style */
 .headerTextArea{
     font-weight: 700 !important;
     font-size: 2.25rem !important;
