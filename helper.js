@@ -34,7 +34,8 @@ function deleteLastHeader() {
 
     lastH1.remove();
 
-    $("#mainNotes").text(h1Text);
+    changeTextAreaPlaceholder(true);
+    $("#mainNotes").val(h1Text);
 }
 
 // Check if the <textarea> contains only the command "/"
