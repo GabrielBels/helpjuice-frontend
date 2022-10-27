@@ -1,0 +1,168 @@
+<!-- Jesus Juva -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HelpJuice - Test Project</title>
+
+    <link rel="HelpJuice Icon" href="src/icon.ico" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="helper.js"></script>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+</head>
+
+<body class="w-screen">
+    <div class="container pl-40 pt-10 ">
+        <div class="border-solid  border-b-2 pb-2 w-5/6 ">
+            <h1 class="text-4xl font-bold text-left pb-0.5">
+                Front-end developer test project
+            </h1>
+        </div>
+        <div class="pt-5 w-5/6">
+            <p>Goal: Make a page that looks exatcly like the figma's page, and has the same functionalities</p>
+        </div>
+        <div id="divHeaders">
+
+        </div>
+        <div id="divTextArea" class="pt-5 w-5/6">
+            <textarea is-writing-header="0" class="resize-none w-full placeholder:text-slate-400 h-screen"
+                id="mainNotes" placeholder="Type / for blocks, @ to link docs or people"></textarea>
+
+            <div id="helpBlock"
+                class="hidden md:top-64 lg:top-48 left-40 border border-slate-400/20 w-max pt-3 absolute">
+                <div class="flex items-center rounded-md p-1.5 px-3.5 ">
+                    <h1 class="font-bold">Add blocks</h1><br>
+                </div>
+                <div class="flex items-center rounded-md p-1.5 pt-0 px-3.5 ">
+                    <p class="text-gray-400 font-light">Keep typing to filter, or escape to exit</p>
+                </div>
+                <div class="flex items-center p-1.5 pt-3 border-solid border-slate-400/20 px-3.5  border-b-2">
+                    <p class="text-gray-500">Filtering keyword
+                        <button class="rounded bg-sky-700 text-white w-max" disabled="disabled">&nbsp;<span
+                                id="txtQttKeywords">1</span>&nbsp;</button>
+                    </p>
+                </div>
+                <div id="lineHeadingElement" class="flex items-center p-1.5 hover:bg-slate-100 hover:cursor-pointer">
+                    <div class="flex-initial">
+                        <svg class="w-4" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 25.531 25.531"
+                            style="filter: invert(0.6);" xml:space="preserve">
+                            <g id="c179_text">
+                                <path d="M25.198,6.273c-0.014,0.23-0.045,0.389-0.087,0.467c-0.045,0.084-0.176,0.145-0.392,0.183
+                            c-0.469,0.104-0.781-0.074-0.935-0.533C23.239,4.7,22.59,3.578,21.84,3.016c-1.041-0.773-2.862-1.161-5.469-1.161
+                            c-1.054,0-1.633,0.115-1.734,0.343c-0.036,0.075-0.057,0.184-0.057,0.324v18.999c0,0.812,0.188,1.383,0.571,1.709
+                            c0.382,0.32,1.069,0.731,2.201,0.999c0.483,0.103,0.97,0.2,1.034,0.239c0.46,0,0.504,1.057-0.376,1.057
+                            c-0.025,0.016-10.375-0.008-10.375-0.008s-0.723-0.439-0.074-1.023c0.271-0.121,0.767-0.343,0.767-0.343s1.83-0.614,2.211-1.009
+                            c0.434-0.445,0.648-1.164,0.648-2.154V2.521c0-0.369-0.229-0.585-0.687-0.647c-0.049-0.015-0.425-0.02-1.122-0.02
+                           c-2.415,0-4.191,0.418-5.338,1.259C3.176,3.735,2.411,4.877,1.737,6.545C1.52,7.065,1.22,7.234,0.84,7.058
+                           C0.408,6.957,0.251,6.719,0.363,6.353c0.445-1.374,0.668-3.31,0.668-5.814c0-0.292,0.387-0.586,1.163-0.533L23.56,0.064
+                           c0.709-0.104,1.096,0.012,1.16,0.343C25.076,2.096,25.234,4.052,25.198,6.273z" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="flex-1 pl-4">
+                        <div class="grid grid-rows-2">
+                            <h1 class="font-bold text-sm">Heading</h1>
+                            <p class="text-gray-400 text-xs font-light">
+                                Add /1 + your text and press Enter
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(() => {
+
+        // Handle all key up on the main <textarea>
+        $("#mainNotes").keyup(() => {
+            var txtTextArea = ($("#mainNotes").val() ?? "").trim();
+
+            if (!txtTextArea) {
+                $("#helpBlock").hide();
+                return;
+            }
+
+            if (!checkIsWritingHeader()) {
+                var isBarAndOne = checkHasTransformHeader(txtTextArea);
+                var isOnlyBar = checkIsBar(txtTextArea);
+
+                if (isBarAndOne) {
+                    changeTextAreaPlaceholder(true);
+                    $("#helpBlock").hide();
+                }
+                else if (isOnlyBar) {
+                    setHelpBlockPosition();
+                    $("#helpBlock").show();
+                }
+                else {
+                    $("#helpBlock").hide();
+                }
+            }
+        });
+
+        $('#mainNotes').keydown(function (e) {
+            var key = e.which;
+            if (key == 13)  // the enter key code
+            {
+                var textAreatxt = ($("#mainNotes").val() ?? "").trim();
+
+                var isWritingHeader = checkIsWritingHeader();
+
+                if (!textAreatxt) {
+                    if (isWritingHeader)
+                        e.preventDefault();
+
+                    return true;
+                }
+
+                if (isWritingHeader == "1") {
+                    e.preventDefault();
+                    createHeaderBeforeTextArea(textAreatxt);
+                    $("#mainNotes").val("");
+                    changeTextAreaPlaceholder(false);
+                }
+
+                return true;
+            } else if (key == 8) // the backspace key code 
+            {
+                var textAreatxt = $("#mainNotes").val();
+
+                if (!textAreatxt) {
+                    e.preventDefault();
+
+
+                    // If its writing the Header
+                    if (checkIsWritingHeader())
+                        changeTextAreaPlaceholder(false);
+                    else if ($("#divHeaders h1").length > 0) // If has some header, erase the most recent
+                        deleteLastHeader();
+
+
+                    return true;
+                }
+
+                return true;
+            }
+        });
+
+        $("#lineHeadingElement").click(() => {
+            changeTextAreaPlaceholder(true);
+            $("#helpBlock").hide();
+        });
+    });
+</script>
+
+</html>
+<!-- Soli Deo Gloria -->
