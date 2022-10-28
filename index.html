@@ -162,7 +162,7 @@
                     // Clear the box and return to the normal typing
                     if (checkIsWritingHeader())
                         changeTextAreaPlaceholder(false);
-                    else if ($("#divHeaders h1").length > 0) // If has some header, erase the most recent
+                    else if ($("#divHeaders").children().length > 0) // If has some header, erase the most recent
                         deleteLastHeader();
 
                     return true;

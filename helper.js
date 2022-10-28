@@ -2,6 +2,13 @@
 // Change the <textarea> placeholder for Heading, when typed /1
 function changeTextAreaPlaceholder(isAppendClass) {
     if (isAppendClass) {
+        var txt = $("#mainNotes").val();
+
+        var textBeforeBar = txt.substr(0, txt.indexOf("/"));
+
+        if (textBeforeBar)
+            createParagraphBeforeTextArea(textBeforeBar.replaceAll("\n", "<br>"));
+
         $("#mainNotes")
             .addClass("headerTextArea")
             .attr("placeholder", "Header")
@@ -16,9 +23,14 @@ function changeTextAreaPlaceholder(isAppendClass) {
     }
 }
 
-// Create a Header on above the textarea
+// Create a Header above the textarea
 function createHeaderBeforeTextArea(txt) {
     $("#divHeaders").append(`<h1 class="text-4xl font-bold">${txt}</h1>`);
+}
+
+// Create a paragraph above the textarea
+function createParagraphBeforeTextArea(txt) {
+    $("#divHeaders").append(`<p>${txt}</p>`);
 }
 
 // Check if is current creating a Header
@@ -28,19 +40,35 @@ function checkIsWritingHeader() {
 
 // Delete the most recent Header
 function deleteLastHeader() {
-    var lastH1 = $("#divHeaders").children("h1").last();
+    var lastH1 = $("#divHeaders").children().last();
 
-    var h1Text = lastH1.text();
+    if (!lastH1)
+        return;
 
-    lastH1.remove();
+    var tagName = lastH1.prop("tagName");
+    var elementText = "";
 
-    changeTextAreaPlaceholder(true);
-    $("#mainNotes").val(h1Text);
+    if (tagName == "H1") {
+        var h1 = $("#divHeaders").children("h1").last();
+        elementText = h1.html();
+
+        h1.remove();
+        changeTextAreaPlaceholder(true);
+    } else {
+        var p = $("#divHeaders").children("p").last();
+        elementText = p.html();
+
+        p.remove();
+        changeTextAreaPlaceholder(false);
+    }
+
+    $("#mainNotes").val(elementText.replaceAll("<br>", "\n"));
 }
 
 // Check if the <textarea> contains only the command "/"
 function checkIsBar(txt) {
-    if (!txt || (txt.length == 1 && txt.trim().substr(0, 1) == "/"))
+    if (!txt || (txt.length == 1 && txt.trim().substr(0, 1) == "/")
+        || txt.substr(txt.length - 1) == "/")
         return true;
     else
         return false;
@@ -48,7 +76,7 @@ function checkIsBar(txt) {
 
 function checkHasTransformHeader(txt) {
     // if txt begins with "/" or txt begins with "/1"
-    if (txt.substr(0, 2) == "/1")
+    if (txt.substr(txt.length - 2) == "/1")
         return true;
     else
         return false;
